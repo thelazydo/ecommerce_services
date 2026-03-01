@@ -1,0 +1,69 @@
+asyncapi: 3.0.0
+info:
+  title: Ecommerce Microservices Event-Driven API
+  version: 1.0.0
+  description: API documentation for the event-driven communication between microservices using RabbitMQ.
+
+servers:
+  rabbitmq:
+    host: rabbitmq
+    protocol: amqp
+    description: RabbitMQ broker used for internal microservice communication.
+
+channels:
+  paymentProcessed:
+    address: payment.processed
+    messages:
+      paymentProcessedMessage:
+        $ref: '#/components/messages/PaymentProcessedMessage'
+    description: Queue for successfully processed payments.
+
+operations:
+  paymentServicePublish:
+    action: send
+    channel:
+      $ref: '#/channels/paymentProcessed'
+    summary: Publish a processed payment event.
+    description: The payment-service publishes an event to this queue when a payment is successfully processed.
+
+  transactionWorkerSubscribe:
+    action: receive
+    channel:
+      $ref: '#/channels/paymentProcessed'
+    summary: Subscribe to processed payment events.
+    description: The transaction-worker subscribes to this queue to save the transaction to the database.
+
+components:
+  messages:
+    PaymentProcessedMessage:
+      name: PaymentProcessed
+      title: Payment Processed Event
+      summary: Event emitted when a payment is processed.
+      payload:
+        $ref: '#/components/schemas/PaymentMessagePayload'
+
+  schemas:
+    PaymentMessagePayload:
+      type: object
+      properties:
+        customerId:
+          type: string
+          description: Standardized ID of the customer who made the purchase.
+        orderId:
+          type: string
+          description: The ID of the order being paid for.
+        productId:
+          type: string
+          description: The ID of the product purchased.
+        amount:
+          type: number
+          description: Total amount paid.
+        correlationId:
+          type: string
+          description: Trace ID for distributed tracing and context logging.
+      required:
+        - customerId
+        - orderId
+        - productId
+        - amount
+        - correlationId
