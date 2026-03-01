@@ -21,7 +21,11 @@ describe("CustomerMapper", () => {
 
     describe("toDocument", () => {
         it("should map a Customer entity to a partial document", () => {
-            const customer = new Customer("entity-id", "Test User", "test@example.com");
+            const customer = new Customer(
+                "entity-id",
+                "Test User",
+                "test@example.com"
+            );
 
             const doc = CustomerMapper.toDocument(customer);
 

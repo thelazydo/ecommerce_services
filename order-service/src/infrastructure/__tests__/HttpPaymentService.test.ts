@@ -36,7 +36,9 @@ describe("HttpPaymentService", () => {
     });
 
     it("should return success: true for HTTP 201", async () => {
-        nock(PAYMENT_URL).post("/api/v1/payments").reply(201, { created: true });
+        nock(PAYMENT_URL)
+            .post("/api/v1/payments")
+            .reply(201, { created: true });
 
         const result = await service.processPayment(baseRequest);
         expect(result.success).toBe(true);
@@ -44,7 +46,9 @@ describe("HttpPaymentService", () => {
     });
 
     it("should return success: true for HTTP 202", async () => {
-        nock(PAYMENT_URL).post("/api/v1/payments").reply(202, { accepted: true });
+        nock(PAYMENT_URL)
+            .post("/api/v1/payments")
+            .reply(202, { accepted: true });
 
         const result = await service.processPayment(baseRequest);
         expect(result.success).toBe(true);
@@ -140,9 +144,7 @@ describe("HttpPaymentService", () => {
             nock(PAYMENT_URL)
                 .post("/api/v1/payments")
                 .reply(500, { error: "Server Error" });
-            nock(PAYMENT_URL)
-                .post("/api/v1/payments")
-                .reply(200, { ok: true });
+            nock(PAYMENT_URL).post("/api/v1/payments").reply(200, { ok: true });
 
             const result = await retryService.processPayment(baseRequest);
             expect(result.success).toBe(true);

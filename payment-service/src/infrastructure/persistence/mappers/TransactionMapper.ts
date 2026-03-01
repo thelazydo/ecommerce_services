@@ -10,7 +10,7 @@ export class TransactionMapper {
             doc.productId,
             doc.amount,
             doc.status,
-            doc.createdAt,
+            doc.createdAt
         );
     }
 

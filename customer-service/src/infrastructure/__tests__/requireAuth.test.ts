@@ -25,7 +25,9 @@ describe("requireAuth Middleware", () => {
 
         expect(res.status).toHaveBeenCalledWith(401);
         expect(res.json).toHaveBeenCalledWith(
-            expect.objectContaining({ error: expect.stringContaining("Unauthorized") }),
+            expect.objectContaining({
+                error: expect.stringContaining("Unauthorized"),
+            })
         );
         expect(next).not.toHaveBeenCalled();
     });

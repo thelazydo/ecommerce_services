@@ -3,6 +3,6 @@ export class Product {
         public readonly id: string,
         public name: string,
         public price: number,
-        public description?: string,
-    ) { }
+        public description?: string
+    ) {}
 }

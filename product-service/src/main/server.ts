@@ -11,7 +11,9 @@ if (!config.mongodbUri) {
 const connectWithRetry = () => {
     logger.info("MongoDB connection with retry");
     mongoose
-        .connect(config.mongodbUri!, { writeConcern: { w: "majority", j: true } })
+        .connect(config.mongodbUri!, {
+            writeConcern: { w: "majority", j: true },
+        })
         .then(async () => {
             logger.info("Connected to MongoDB (Product Service)");
 
@@ -46,7 +48,7 @@ const connectWithRetry = () => {
         .catch((error) => {
             logger.error(
                 { err: error },
-                "MongoDB connection error (Product Service)",
+                "MongoDB connection error (Product Service)"
             );
             logger.info("Retrying MongoDB connection in 5 seconds...");
             setTimeout(connectWithRetry, 5000);

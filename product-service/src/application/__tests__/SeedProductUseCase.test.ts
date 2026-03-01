@@ -21,10 +21,18 @@ describe("SeedProductUseCase", () => {
     it("should create a new product when none exists", async () => {
         mockRepo.findByName.mockResolvedValue(null);
         mockRepo.save.mockResolvedValue(
-            new Product("p-1", "Awesome Gadget", 99.99, "A really awesome gadget for all your needs"),
+            new Product(
+                "p-1",
+                "Awesome Gadget",
+                99.99,
+                "A really awesome gadget for all your needs"
+            )
         );
 
-        const result = await useCase.execute({ actorId: "admin", correlationId: "c-1" });
+        const result = await useCase.execute({
+            actorId: "admin",
+            correlationId: "c-1",
+        });
 
         expect(mockRepo.save).toHaveBeenCalledTimes(1);
         expect(result.id).toBe("p-1");
@@ -33,10 +41,18 @@ describe("SeedProductUseCase", () => {
     });
 
     it("should return existing product when already seeded", async () => {
-        const existing = new Product("existing-p", "Awesome Gadget", 99.99, "desc");
+        const existing = new Product(
+            "existing-p",
+            "Awesome Gadget",
+            99.99,
+            "desc"
+        );
         mockRepo.findByName.mockResolvedValue(existing);
 
-        const result = await useCase.execute({ actorId: "admin", correlationId: "c-2" });
+        const result = await useCase.execute({
+            actorId: "admin",
+            correlationId: "c-2",
+        });
 
         expect(mockRepo.save).not.toHaveBeenCalled();
         expect(result.id).toBe("existing-p");
@@ -44,7 +60,9 @@ describe("SeedProductUseCase", () => {
 
     it("should log an audit entry", async () => {
         mockRepo.findByName.mockResolvedValue(null);
-        mockRepo.save.mockResolvedValue(new Product("p-2", "Awesome Gadget", 99.99));
+        mockRepo.save.mockResolvedValue(
+            new Product("p-2", "Awesome Gadget", 99.99)
+        );
 
         await useCase.execute({ actorId: "admin", correlationId: "c-3" });
 
@@ -53,7 +71,7 @@ describe("SeedProductUseCase", () => {
                 action: "PRODUCT_SEEDED",
                 entityId: "p-2",
                 entityType: "Product",
-            }),
+            })
         );
     });
 });

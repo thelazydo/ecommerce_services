@@ -25,7 +25,15 @@ afterEach(async () => {
 describe("MongoTransactionRepository", () => {
     describe("save", () => {
         it("should persist a transaction and return it with an id", async () => {
-            const txn = new Transaction("", "c-1", "o-1", "p-1", 100, "success", new Date());
+            const txn = new Transaction(
+                "",
+                "c-1",
+                "o-1",
+                "p-1",
+                100,
+                "success",
+                new Date()
+            );
             const saved = await repo.save(txn);
 
             expect(saved.id).toBeDefined();
@@ -36,7 +44,17 @@ describe("MongoTransactionRepository", () => {
         });
 
         it("should store the transaction in the database", async () => {
-            await repo.save(new Transaction("", "c-1", "o-1", "p-1", 50, "success", new Date()));
+            await repo.save(
+                new Transaction(
+                    "",
+                    "c-1",
+                    "o-1",
+                    "p-1",
+                    50,
+                    "success",
+                    new Date()
+                )
+            );
             const count = await TransactionModel.countDocuments();
             expect(count).toBe(1);
         });
@@ -44,7 +62,17 @@ describe("MongoTransactionRepository", () => {
 
     describe("findByOrderId", () => {
         it("should return a transaction by orderId", async () => {
-            await repo.save(new Transaction("", "c-1", "order-abc", "p-1", 100, "success", new Date()));
+            await repo.save(
+                new Transaction(
+                    "",
+                    "c-1",
+                    "order-abc",
+                    "p-1",
+                    100,
+                    "success",
+                    new Date()
+                )
+            );
 
             const found = await repo.findByOrderId("order-abc");
 

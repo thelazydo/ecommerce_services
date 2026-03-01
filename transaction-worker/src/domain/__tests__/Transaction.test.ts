@@ -10,7 +10,7 @@ describe("Transaction Entity", () => {
             "product-1",
             99.99,
             "success",
-            date,
+            date
         );
 
         expect(transaction.id).toBe("tx-123");

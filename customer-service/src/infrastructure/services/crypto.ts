@@ -23,7 +23,7 @@ export const encryptDeterministic = (text: string): string => {
     const cipher = crypto.createCipheriv(
         ALGORITHM_DETERMINISTIC,
         Buffer.from(ENCRYPTION_KEY),
-        staticIv,
+        staticIv
     );
     let encrypted = cipher.update(text, "utf8", "hex");
     encrypted += cipher.final("hex");
@@ -41,7 +41,7 @@ export const decryptDeterministic = (text: string): string => {
     const decipher = crypto.createDecipheriv(
         ALGORITHM_DETERMINISTIC,
         Buffer.from(ENCRYPTION_KEY),
-        staticIv,
+        staticIv
     );
     let decrypted = decipher.update(actualCiphertext, "hex", "utf8");
     decrypted += decipher.final("utf8");
@@ -60,7 +60,7 @@ export const encryptGCM = (text: string): string => {
     const cipher = crypto.createCipheriv(
         ALGORITHM_GCM,
         Buffer.from(ENCRYPTION_KEY),
-        iv,
+        iv
     );
 
     let encrypted = cipher.update(text, "utf8", "hex");
@@ -89,7 +89,7 @@ export const decryptGCM = (text: string): string => {
     const decipher = crypto.createDecipheriv(
         ALGORITHM_GCM,
         Buffer.from(ENCRYPTION_KEY),
-        iv,
+        iv
     );
     decipher.setAuthTag(authTag);
 

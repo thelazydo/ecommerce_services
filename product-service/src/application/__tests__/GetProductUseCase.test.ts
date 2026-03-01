@@ -18,7 +18,7 @@ describe("GetProductUseCase", () => {
 
     it("should return product DTO when found", async () => {
         mockRepo.findById.mockResolvedValue(
-            new Product("p-1", "Widget", 19.99, "A widget"),
+            new Product("p-1", "Widget", 19.99, "A widget")
         );
 
         const result = await useCase.execute({ id: "p-1" });
@@ -33,7 +33,7 @@ describe("GetProductUseCase", () => {
         mockRepo.findById.mockResolvedValue(null);
 
         await expect(useCase.execute({ id: "missing" })).rejects.toThrow(
-            ProductNotFoundError,
+            ProductNotFoundError
         );
     });
 });

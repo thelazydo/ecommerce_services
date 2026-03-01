@@ -12,7 +12,7 @@ const paymentService = new HttpPaymentService(config.paymentServiceUrl);
 const createOrderUseCase = new CreateOrderUseCase(
     orderRepository,
     paymentService,
-    auditLogger,
+    auditLogger
 );
 
 const orderController = new OrderController(createOrderUseCase);

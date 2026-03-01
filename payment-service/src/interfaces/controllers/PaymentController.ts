@@ -1,5 +1,8 @@
 import { Request, Response } from "express";
-import { MessagePublisherNotReadyError, ProcessPaymentUseCase } from "@application/use-cases/ProcessPaymentUseCase";
+import {
+    MessagePublisherNotReadyError,
+    ProcessPaymentUseCase,
+} from "@application/use-cases/ProcessPaymentUseCase";
 import { z } from "zod";
 
 const paymentValidationSchema = z.object({
@@ -10,16 +13,20 @@ const paymentValidationSchema = z.object({
 });
 
 export class PaymentController {
-    constructor(private readonly processPaymentUseCase: ProcessPaymentUseCase) { }
+    constructor(
+        private readonly processPaymentUseCase: ProcessPaymentUseCase
+    ) {}
 
     processPayment = async (req: Request, res: Response): Promise<any> => {
         try {
-            const validationResult = paymentValidationSchema.safeParse(req.body);
+            const validationResult = paymentValidationSchema.safeParse(
+                req.body
+            );
 
             if (!validationResult.success) {
                 req.log.warn(
                     { issues: validationResult.error.issues },
-                    "Validation failed",
+                    "Validation failed"
                 );
                 return res.status(400).json({
                     error: "Missing required fields",
@@ -27,7 +34,8 @@ export class PaymentController {
                 });
             }
 
-            const { customerId, orderId, productId, amount } = validationResult.data;
+            const { customerId, orderId, productId, amount } =
+                validationResult.data;
 
             const result = await this.processPaymentUseCase.execute({
                 customerId,
@@ -37,7 +45,10 @@ export class PaymentController {
                 correlationId: req.correlationId,
             });
 
-            req.log.info({ payload: { customerId, orderId, productId, amount } }, "Payment processed");
+            req.log.info(
+                { payload: { customerId, orderId, productId, amount } },
+                "Payment processed"
+            );
 
             if (result.idempotent) {
                 return res.status(200).json(result);
@@ -55,7 +66,10 @@ export class PaymentController {
             req.log.error({ err: error }, "Payment processing failed");
             return res
                 .status(500)
-                .json({ error: "Failed to process payment", details: error.message });
+                .json({
+                    error: "Failed to process payment",
+                    details: error.message,
+                });
         }
     };
 }

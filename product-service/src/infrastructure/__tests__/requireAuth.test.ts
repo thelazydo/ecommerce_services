@@ -6,7 +6,10 @@ const requireAuth = createRequireAuth(JWT_SECRET);
 
 function createMocks() {
     const req: any = { headers: {}, log: { warn: jest.fn() } };
-    const res: any = { status: jest.fn().mockReturnThis(), json: jest.fn().mockReturnThis() };
+    const res: any = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn().mockReturnThis(),
+    };
     const next = jest.fn();
     return { req, res, next };
 }

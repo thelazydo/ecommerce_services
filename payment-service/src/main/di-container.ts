@@ -11,12 +11,12 @@ const rabbitMQPublisher = new RabbitMQPublisher();
 
 const processPaymentUseCase = new ProcessPaymentUseCase(
     transactionRepository,
-    rabbitMQPublisher,
+    rabbitMQPublisher
 );
 
 const saveTransactionUseCase = new SaveTransactionUseCase(
     transactionRepository,
-    auditLogger,
+    auditLogger
 );
 
 const paymentController = new PaymentController(processPaymentUseCase);

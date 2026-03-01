@@ -44,13 +44,21 @@ describe("ProcessPaymentUseCase", () => {
                 customerId: "c-1",
                 orderId: "o-1",
                 amount: 100,
-            }),
+            })
         );
     });
 
     it("should return idempotent response when transaction already exists", async () => {
         mockRepo.findByOrderId.mockResolvedValue(
-            new Transaction("t-1", "c-1", "o-1", "p-1", 100, "success", new Date()),
+            new Transaction(
+                "t-1",
+                "c-1",
+                "o-1",
+                "p-1",
+                100,
+                "success",
+                new Date()
+            )
         );
 
         const result = await useCase.execute(request);
@@ -65,14 +73,22 @@ describe("ProcessPaymentUseCase", () => {
         mockPublisher.isReady.mockReturnValue(false);
 
         await expect(useCase.execute(request)).rejects.toThrow(
-            MessagePublisherNotReadyError,
+            MessagePublisherNotReadyError
         );
         expect(mockPublisher.publish).not.toHaveBeenCalled();
     });
 
     it("should check existing transaction first before checking publisher", async () => {
         mockRepo.findByOrderId.mockResolvedValue(
-            new Transaction("t-1", "c-1", "o-1", "p-1", 100, "success", new Date()),
+            new Transaction(
+                "t-1",
+                "c-1",
+                "o-1",
+                "p-1",
+                100,
+                "success",
+                new Date()
+            )
         );
         mockPublisher.isReady.mockReturnValue(false);
 

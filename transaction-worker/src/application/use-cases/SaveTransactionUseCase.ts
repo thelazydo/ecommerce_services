@@ -5,8 +5,8 @@ import { logger } from "@main/config";
 
 export class SaveTransactionUseCase {
     constructor(
-        private readonly transactionRepository: ITransactionRepository,
-    ) { }
+        private readonly transactionRepository: ITransactionRepository
+    ) {}
 
     async execute(request: SaveTransactionRequest): Promise<Transaction> {
         const transaction = new Transaction(
@@ -16,7 +16,7 @@ export class SaveTransactionUseCase {
             request.productId,
             request.amount,
             "success",
-            new Date(),
+            new Date()
         );
 
         const saved = await this.transactionRepository.save(transaction);
@@ -27,7 +27,7 @@ export class SaveTransactionUseCase {
                 orderId: request.orderId,
                 correlationId: request.correlationId,
             },
-            "Transaction saved",
+            "Transaction saved"
         );
 
         return saved;

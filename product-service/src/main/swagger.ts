@@ -6,7 +6,8 @@ const swaggerDocument = {
     info: {
         title: "Product Service API",
         version: "1.0.0",
-        description: "Manages product entities. Provides seeding and retrieval.",
+        description:
+            "Manages product entities. Provides seeding and retrieval.",
     },
     servers: [{ url: "/api/v1", description: "v1 API" }],
     components: {
@@ -21,10 +22,16 @@ const swaggerDocument = {
             Product: {
                 type: "object",
                 properties: {
-                    _id: { type: "string", example: "665a1b2c3d4e5f6a7b8c9d0e" },
+                    _id: {
+                        type: "string",
+                        example: "665a1b2c3d4e5f6a7b8c9d0e",
+                    },
                     name: { type: "string", example: "Awesome Gadget" },
                     price: { type: "number", example: 99.99 },
-                    description: { type: "string", example: "A really awesome gadget" },
+                    description: {
+                        type: "string",
+                        example: "A really awesome gadget",
+                    },
                 },
             },
             Error: {
@@ -47,7 +54,9 @@ const swaggerDocument = {
                         description: "Product created/returned",
                         content: {
                             "application/json": {
-                                schema: { $ref: "#/components/schemas/Product" },
+                                schema: {
+                                    $ref: "#/components/schemas/Product",
+                                },
                             },
                         },
                     },
@@ -65,7 +74,10 @@ const swaggerDocument = {
                         name: "id",
                         in: "path",
                         required: true,
-                        schema: { type: "string", pattern: "^[a-fA-F0-9]{24}$" },
+                        schema: {
+                            type: "string",
+                            pattern: "^[a-fA-F0-9]{24}$",
+                        },
                         description: "MongoDB ObjectId",
                     },
                 ],
@@ -74,7 +86,9 @@ const swaggerDocument = {
                         description: "Product found",
                         content: {
                             "application/json": {
-                                schema: { $ref: "#/components/schemas/Product" },
+                                schema: {
+                                    $ref: "#/components/schemas/Product",
+                                },
                             },
                         },
                     },

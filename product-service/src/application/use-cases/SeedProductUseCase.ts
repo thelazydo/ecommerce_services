@@ -15,14 +15,19 @@ const SEED_DATA = {
 export class SeedProductUseCase {
     constructor(
         private readonly productRepository: IProductRepository,
-        private readonly auditLogger: IAuditLogger,
-    ) { }
+        private readonly auditLogger: IAuditLogger
+    ) {}
 
     async execute(request: SeedProductRequest): Promise<SeedProductResponse> {
         let product = await this.productRepository.findByName(SEED_DATA.name);
 
         if (!product) {
-            product = new Product("", SEED_DATA.name, SEED_DATA.price, SEED_DATA.description);
+            product = new Product(
+                "",
+                SEED_DATA.name,
+                SEED_DATA.price,
+                SEED_DATA.description
+            );
             product = await this.productRepository.save(product);
         }
 

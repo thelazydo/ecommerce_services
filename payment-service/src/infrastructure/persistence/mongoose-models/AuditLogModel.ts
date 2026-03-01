@@ -22,5 +22,5 @@ const auditLogSchema = new Schema<IAuditLogDocument>({
 
 export const AuditLogModel = mongoose.model<IAuditLogDocument>(
     "AuditLog",
-    auditLogSchema,
+    auditLogSchema
 );

@@ -17,10 +17,10 @@ const TransactionSchema = new Schema<ITransactionDocument>(
         amount: { type: Number, required: true },
         status: { type: String, required: true, default: "success" },
     },
-    { timestamps: true },
+    { timestamps: true }
 );
 
 export const TransactionModel = mongoose.model<ITransactionDocument>(
     "Transaction",
-    TransactionSchema,
+    TransactionSchema
 );

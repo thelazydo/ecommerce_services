@@ -26,7 +26,11 @@ describe("ProductMapper", () => {
             const product = new Product("id", "Gadget", 9.99, "desc");
             const doc = ProductMapper.toDocument(product);
 
-            expect(doc).toEqual({ name: "Gadget", price: 9.99, description: "desc" });
+            expect(doc).toEqual({
+                name: "Gadget",
+                price: 9.99,
+                description: "desc",
+            });
             expect(doc).not.toHaveProperty("_id");
         });
     });

@@ -1,4 +1,7 @@
-import { CreateOrderUseCase, PaymentFailedError } from "@application/use-cases/CreateOrderUseCase";
+import {
+    CreateOrderUseCase,
+    PaymentFailedError,
+} from "@application/use-cases/CreateOrderUseCase";
 import { IOrderRepository } from "@domain/repositories/IOrderRepository";
 import { IAuditLogger } from "@application/interfaces/IAuditLogger";
 import { IPaymentService } from "@application/interfaces/IPaymentService";
@@ -27,11 +30,22 @@ describe("CreateOrderUseCase", () => {
         };
         mockPaymentService = { processPayment: jest.fn() };
         mockAuditLogger = { log: jest.fn().mockResolvedValue(undefined) };
-        useCase = new CreateOrderUseCase(mockOrderRepo, mockPaymentService, mockAuditLogger);
+        useCase = new CreateOrderUseCase(
+            mockOrderRepo,
+            mockPaymentService,
+            mockAuditLogger
+        );
 
         // Default: save returns order with an id
-        mockOrderRepo.save.mockImplementation(async (order) =>
-            new Order("saved-id", order.customerId, order.productId, order.amount, order.orderStatus),
+        mockOrderRepo.save.mockImplementation(
+            async (order) =>
+                new Order(
+                    "saved-id",
+                    order.customerId,
+                    order.productId,
+                    order.amount,
+                    order.orderStatus
+                )
         );
     });
 
@@ -66,12 +80,16 @@ describe("CreateOrderUseCase", () => {
                 orderId: "saved-id",
                 correlationId: "corr-1",
                 authorizationHeader: "Bearer token",
-            }),
+            })
         );
     });
 
     it("should return correct response on payment success", async () => {
-        mockPaymentService.processPayment.mockResolvedValue({ success: true, status: 200, data: {} });
+        mockPaymentService.processPayment.mockResolvedValue({
+            success: true,
+            status: 200,
+            data: {},
+        });
 
         const result = await useCase.execute(request);
 
@@ -82,7 +100,11 @@ describe("CreateOrderUseCase", () => {
     });
 
     it("should log an audit entry on success", async () => {
-        mockPaymentService.processPayment.mockResolvedValue({ success: true, status: 200, data: {} });
+        mockPaymentService.processPayment.mockResolvedValue({
+            success: true,
+            status: 200,
+            data: {},
+        });
 
         await useCase.execute(request);
 
@@ -92,7 +114,7 @@ describe("CreateOrderUseCase", () => {
                 entityId: "saved-id",
                 entityType: "Order",
                 actorId: "user-1",
-            }),
+            })
         );
     });
 
@@ -104,7 +126,9 @@ describe("CreateOrderUseCase", () => {
         });
         mockOrderRepo.update.mockImplementation(async (order) => order);
 
-        await expect(useCase.execute(request)).rejects.toThrow(PaymentFailedError);
+        await expect(useCase.execute(request)).rejects.toThrow(
+            PaymentFailedError
+        );
 
         expect(mockOrderRepo.update).toHaveBeenCalledTimes(1);
         const updatedOrder = mockOrderRepo.update.mock.calls[0][0];
@@ -137,7 +161,9 @@ describe("CreateOrderUseCase", () => {
         });
         mockOrderRepo.update.mockImplementation(async (order) => order);
 
-        try { await useCase.execute(request); } catch { }
+        try {
+            await useCase.execute(request);
+        } catch {}
 
         expect(mockAuditLogger.log).not.toHaveBeenCalled();
     });

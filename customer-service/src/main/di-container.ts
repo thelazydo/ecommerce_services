@@ -10,13 +10,13 @@ const auditLogger = new MongoAuditLogger(logger);
 
 const seedCustomerUseCase = new SeedCustomerUseCase(
     customerRepository,
-    auditLogger,
+    auditLogger
 );
 const getCustomerUseCase = new GetCustomerUseCase(customerRepository);
 
 const customerController = new CustomerController(
     seedCustomerUseCase,
-    getCustomerUseCase,
+    getCustomerUseCase
 );
 
 export const container = {

@@ -6,6 +6,6 @@ export class Transaction {
         public productId: string,
         public amount: number,
         public status: string,
-        public createdAt: Date,
-    ) { }
+        public createdAt: Date
+    ) {}
 }

@@ -1,18 +1,18 @@
 {
-  "name": "e2e-tests",
-  "version": "1.0.0",
-  "description": "End-to-end integration tests for the microservices",
-  "scripts": {
-    "test": "jest --testTimeout=60000 --forceExit --detectOpenHandles"
-  },
-  "dependencies": {
-    "axios": "^1.7.0",
-    "jsonwebtoken": "^9.0.2",
-    "mongodb": "^6.8.0"
-  },
-  "devDependencies": {
-    "@types/bun": "^1.3.9",
-    "@types/jsonwebtoken": "^9.0.6",
-    "typescript": "^5.5.0"
-  }
+    "name": "e2e-tests",
+    "version": "1.0.0",
+    "description": "End-to-end integration tests for the microservices",
+    "scripts": {
+        "test": "jest --testTimeout=60000 --forceExit --detectOpenHandles"
+    },
+    "dependencies": {
+        "axios": "^1.7.0",
+        "jsonwebtoken": "^9.0.2",
+        "mongodb": "^6.8.0"
+    },
+    "devDependencies": {
+        "@types/bun": "^1.3.9",
+        "@types/jsonwebtoken": "^9.0.6",
+        "typescript": "^5.5.0"
+    }
 }

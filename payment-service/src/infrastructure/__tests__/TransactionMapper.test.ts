@@ -29,7 +29,15 @@ describe("TransactionMapper", () => {
 
     describe("toDocument", () => {
         it("should map a Transaction entity to a partial document", () => {
-            const txn = new Transaction("id", "c-1", "o-1", "p-1", 100, "success", new Date());
+            const txn = new Transaction(
+                "id",
+                "c-1",
+                "o-1",
+                "p-1",
+                100,
+                "success",
+                new Date()
+            );
             const doc = TransactionMapper.toDocument(txn);
 
             expect(doc).toEqual({

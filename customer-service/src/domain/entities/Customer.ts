@@ -1,7 +1,7 @@
 export class Customer {
-  constructor(
-    public readonly id: string,
-    public name: string,
-    public email: string,
-  ) {}
+    constructor(
+        public readonly id: string,
+        public name: string,
+        public email: string
+    ) {}
 }

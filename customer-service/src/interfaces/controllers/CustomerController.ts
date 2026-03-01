@@ -28,8 +28,8 @@ function extractActorId(req: Request): string {
 export class CustomerController {
     constructor(
         private readonly seedCustomerUseCase: SeedCustomerUseCase,
-        private readonly getCustomerUseCase: GetCustomerUseCase,
-    ) { }
+        private readonly getCustomerUseCase: GetCustomerUseCase
+    ) {}
 
     seed = async (req: Request, res: Response): Promise<any> => {
         try {
@@ -48,7 +48,10 @@ export class CustomerController {
             req.log.error({ err: error }, "Failed to seed customer");
             return res
                 .status(500)
-                .json({ error: "Failed to seed customer", details: error.message });
+                .json({
+                    error: "Failed to seed customer",
+                    details: error.message,
+                });
         }
     };
 
@@ -58,7 +61,7 @@ export class CustomerController {
             if (!paramValidation.success) {
                 req.log.warn(
                     { issues: paramValidation.error.issues },
-                    "Validation failed",
+                    "Validation failed"
                 );
                 return res.status(400).json({
                     error: "Validation failed",
@@ -80,18 +83,21 @@ export class CustomerController {
             if (error instanceof CustomerNotFoundError) {
                 req.log.warn(
                     { customerId: req.params.id },
-                    "Customer not found",
+                    "Customer not found"
                 );
                 return res.status(404).json({ error: "Customer not found" });
             }
 
             req.log.error(
                 { err: error, customerId: req.params.id },
-                "Failed to fetch customer",
+                "Failed to fetch customer"
             );
             return res
                 .status(500)
-                .json({ error: "Failed to fetch customer", details: error.message });
+                .json({
+                    error: "Failed to fetch customer",
+                    details: error.message,
+                });
         }
     };
 }

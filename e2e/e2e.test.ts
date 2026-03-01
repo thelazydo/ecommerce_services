@@ -20,13 +20,13 @@ const CUSTOMER_URL = process.env.CUSTOMER_URL || "http://localhost:3001";
 const PRODUCT_URL = process.env.PRODUCT_URL || "http://localhost:3002";
 const ORDER_URL = process.env.ORDER_URL || "http://localhost:3003";
 const MONGODB_URI =
-  process.env.MONGODB_URI || "mongodb://localhost:27017/youverify";
+    process.env.MONGODB_URI || "mongodb://localhost:27017/youverify";
 const JWT_SECRET = process.env.JWT_SECRET || "test-jwt-secret-for-e2e-testing";
 console.log({
-  CUSTOMER_URL,
-  PRODUCT_URL,
-  ORDER_URL,
-  MONGODB_URI,
+    CUSTOMER_URL,
+    PRODUCT_URL,
+    ORDER_URL,
+    MONGODB_URI,
 });
 
 let client: MongoClient;
@@ -34,95 +34,96 @@ let db: Db;
 let token: string;
 
 function createClient(baseURL: string): AxiosInstance {
-  return axios.create({
-    baseURL,
-    headers: { Authorization: `Bearer ${token}` },
-    timeout: 10000,
-    validateStatus: () => true, // don't throw on non-2xx
-  });
+    return axios.create({
+        baseURL,
+        headers: { Authorization: `Bearer ${token}` },
+        timeout: 10000,
+        validateStatus: () => true, // don't throw on non-2xx
+    });
 }
 
 beforeAll(async () => {
-  token = jwt.sign({ sub: "e2e-test-user", role: "admin" }, JWT_SECRET, {
-    expiresIn: "1h",
-  });
+    token = jwt.sign({ sub: "e2e-test-user", role: "admin" }, JWT_SECRET, {
+        expiresIn: "1h",
+    });
 
-  client = new MongoClient(MONGODB_URI);
-  await client.connect();
-  db = client.db();
+    client = new MongoClient(MONGODB_URI);
+    await client.connect();
+    db = client.db();
 });
 
 afterAll(async () => {
-  if (client) await client.close();
+    if (client) await client.close();
 });
 
 describe("E2E: Order → Payment → Transaction Flow", () => {
-  let customerId: string;
-  let productId: string;
+    let customerId: string;
+    let productId: string;
+    const amount = 49.99;
 
-  it("should wait for services to be healthy", async () => {
-    const waitForHealth = async (url: string, name: string) => {
-      for (let i = 0; i < 30; i++) {
-        try {
-          const res = await axios.get(`${url}/health`, {
-            timeout: 2000,
-          });
-          if (res.status === 200) return;
-        } catch {}
-        await new Promise((r) => setTimeout(r, 2000));
-      }
-      throw new Error(`${name} not healthy after 60s`);
-    };
+    it("should wait for services to be healthy", async () => {
+        const waitForHealth = async (url: string, name: string) => {
+            for (let i = 0; i < 30; i++) {
+                try {
+                    const res = await axios.get(`${url}/health`, {
+                        timeout: 2000,
+                    });
+                    if (res.status === 200) return;
+                } catch {}
+                await new Promise((r) => setTimeout(r, 2000));
+            }
+            throw new Error(`${name} not healthy after 60s`);
+        };
 
-    await Promise.all([
-      waitForHealth(CUSTOMER_URL, "customer-service"),
-      waitForHealth(PRODUCT_URL, "product-service"),
-      waitForHealth(ORDER_URL, "order-service"),
-    ]);
-  }, 70000);
+        await Promise.all([
+            waitForHealth(CUSTOMER_URL, "customer-service"),
+            waitForHealth(PRODUCT_URL, "product-service"),
+            waitForHealth(ORDER_URL, "order-service"),
+        ]);
+    }, 70000);
 
-  it("should seed a customer", async () => {
-    const api = createClient(CUSTOMER_URL);
-    const res = await api.post("/api/v1/customers/seed");
-    expect(res.status).toBeLessThan(300);
-    customerId = res.data._id || res.data.id;
-    expect(customerId).toBeDefined();
-  });
-
-  it("should seed a product", async () => {
-    const api = createClient(PRODUCT_URL);
-    const res = await api.post("/api/v1/products/seed");
-    expect(res.status).toBeLessThan(300);
-    productId = res.data._id || res.data.id;
-    expect(productId).toBeDefined();
-  });
-
-  it("should create an order and trigger payment", async () => {
-    const api = createClient(ORDER_URL);
-    const res = await api.post("/api/v1/orders", {
-      customerId,
-      productId,
-      amount: 49.99,
+    it("should seed a customer", async () => {
+        const api = createClient(CUSTOMER_URL);
+        const res = await api.post("/api/v1/customers/seed");
+        expect(res.status).toBeLessThan(300);
+        customerId = res.data._id || res.data.id;
+        expect(customerId).toBeDefined();
     });
 
-    expect(res.status).toBe(201);
-    expect(res.data.orderStatus).toBeDefined();
-  });
+    it("should seed a product", async () => {
+        const api = createClient(PRODUCT_URL);
+        const res = await api.post("/api/v1/products/seed");
+        expect(res.status).toBeLessThan(300);
+        productId = res.data._id || res.data.id;
+        expect(productId).toBeDefined();
+    });
 
-  it("should have a transaction saved by the worker (eventually)", async () => {
-    // The worker consumes async from RabbitMQ — wait up to 15s
-    let transaction = null;
-    for (let i = 0; i < 15; i++) {
-      transaction = await db.collection("transactions").findOne({
-        customerId,
-        productId,
-      });
-      if (transaction) break;
-      await new Promise((r) => setTimeout(r, 1000));
-    }
+    it("should create an order and trigger payment", async () => {
+        const api = createClient(ORDER_URL);
+        const res = await api.post("/api/v1/orders", {
+            customerId,
+            productId,
+            amount,
+        });
 
-    expect(transaction).toBeTruthy();
-    expect(transaction!.amount).toBe(49.99);
-    expect(transaction!.status).toBe("success");
-  }, 20000);
+        expect(res.status).toBe(201);
+        expect(res.data.orderStatus).toBeDefined();
+    });
+
+    it("should have a transaction saved by the worker (eventually)", async () => {
+        // The worker consumes async from RabbitMQ — wait up to 15s
+        let transaction = null;
+        for (let i = 0; i < 15; i++) {
+            transaction = await db.collection("transactions").findOne({
+                customerId,
+                productId,
+            });
+            if (transaction) break;
+            await new Promise((r) => setTimeout(r, 1000));
+        }
+
+        expect(transaction).toBeTruthy();
+        expect(transaction!.amount).toBe(amount);
+        expect(transaction!.status).toBe("success");
+    }, 20000);
 });

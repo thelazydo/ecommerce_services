@@ -21,7 +21,7 @@ describe("SaveTransactionUseCase", () => {
             "prod-1",
             99.99,
             "success",
-            new Date(),
+            new Date()
         );
 
         mockRepo.save.mockResolvedValue(expectedTransaction);

@@ -7,7 +7,7 @@ export class ProductMapper {
             doc._id.toString(),
             doc.name,
             doc.price,
-            doc.description,
+            doc.description
         );
     }
 

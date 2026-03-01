@@ -8,7 +8,7 @@ export class OrderMapper {
             doc.customerId,
             doc.productId,
             doc.amount,
-            doc.orderStatus,
+            doc.orderStatus
         );
     }
 

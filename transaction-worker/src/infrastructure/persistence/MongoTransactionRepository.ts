@@ -21,7 +21,7 @@ export class MongoTransactionRepository implements ITransactionRepository {
             saved.productId,
             saved.amount,
             saved.status,
-            saved.createdAt,
+            saved.createdAt
         );
     }
 }

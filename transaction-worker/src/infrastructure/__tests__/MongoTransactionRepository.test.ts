@@ -36,7 +36,7 @@ describe("MongoTransactionRepository", () => {
             "product-1",
             150.5,
             "success",
-            new Date(),
+            new Date()
         );
 
         const savedTransaction = await repository.save(transaction);

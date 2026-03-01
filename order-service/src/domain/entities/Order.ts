@@ -4,6 +4,6 @@ export class Order {
         public customerId: string,
         public productId: string,
         public amount: number,
-        public orderStatus: "pending" | "failed",
-    ) { }
+        public orderStatus: "pending" | "failed"
+    ) {}
 }

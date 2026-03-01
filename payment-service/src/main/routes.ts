@@ -9,7 +9,7 @@ const requireAuth = createRequireAuth(config.jwtSecret);
 router.post(
     "/payments",
     requireAuth,
-    container.paymentController.processPayment,
+    container.paymentController.processPayment
 );
 
 export { router as paymentRoutes };

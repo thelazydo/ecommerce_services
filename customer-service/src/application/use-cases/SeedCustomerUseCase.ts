@@ -14,11 +14,13 @@ const SEED_DATA = {
 export class SeedCustomerUseCase {
     constructor(
         private readonly customerRepository: ICustomerRepository,
-        private readonly auditLogger: IAuditLogger,
-    ) { }
+        private readonly auditLogger: IAuditLogger
+    ) {}
 
     async execute(request: SeedCustomerRequest): Promise<SeedCustomerResponse> {
-        let customer = await this.customerRepository.findByEmail(SEED_DATA.email);
+        let customer = await this.customerRepository.findByEmail(
+            SEED_DATA.email
+        );
 
         if (!customer) {
             customer = new Customer("", SEED_DATA.name, SEED_DATA.email);

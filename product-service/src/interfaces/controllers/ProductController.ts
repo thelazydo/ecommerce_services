@@ -28,8 +28,8 @@ function extractActorId(req: Request): string {
 export class ProductController {
     constructor(
         private readonly seedProductUseCase: SeedProductUseCase,
-        private readonly getProductUseCase: GetProductUseCase,
-    ) { }
+        private readonly getProductUseCase: GetProductUseCase
+    ) {}
 
     seed = async (req: Request, res: Response): Promise<any> => {
         try {
@@ -49,7 +49,10 @@ export class ProductController {
             req.log.error({ err: error }, "Failed to seed product");
             return res
                 .status(500)
-                .json({ error: "Failed to seed product", details: error.message });
+                .json({
+                    error: "Failed to seed product",
+                    details: error.message,
+                });
         }
     };
 
@@ -59,7 +62,7 @@ export class ProductController {
             if (!paramValidation.success) {
                 req.log.warn(
                     { issues: paramValidation.error.issues },
-                    "Validation failed",
+                    "Validation failed"
                 );
                 return res.status(400).json({
                     error: "Validation failed",
@@ -80,20 +83,20 @@ export class ProductController {
             });
         } catch (error: any) {
             if (error instanceof ProductNotFoundError) {
-                req.log.warn(
-                    { productId: req.params.id },
-                    "Product not found",
-                );
+                req.log.warn({ productId: req.params.id }, "Product not found");
                 return res.status(404).json({ error: "Product not found" });
             }
 
             req.log.error(
                 { err: error, productId: req.params.id },
-                "Failed to fetch product",
+                "Failed to fetch product"
             );
             return res
                 .status(500)
-                .json({ error: "Failed to fetch product", details: error.message });
+                .json({
+                    error: "Failed to fetch product",
+                    details: error.message,
+                });
         }
     };
 }

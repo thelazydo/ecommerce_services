@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 
 if (!config.mongodbUri || !config.rabbitmqUrl) {
     logger.fatal(
-        "MONGODB_URI or RABBITMQ_URL environment variable is missing. Exiting.",
+        "MONGODB_URI or RABBITMQ_URL environment variable is missing. Exiting."
     );
     process.exit(1);
 }
@@ -12,7 +12,9 @@ if (!config.mongodbUri || !config.rabbitmqUrl) {
 const connectWithRetry = () => {
     logger.info("MongoDB connection with retry");
     mongoose
-        .connect(config.mongodbUri!, { writeConcern: { w: "majority", j: true } })
+        .connect(config.mongodbUri!, {
+            writeConcern: { w: "majority", j: true },
+        })
         .then(() => {
             logger.info("Connected to MongoDB (Payment Service)");
             const server = app.listen(config.port, () => {
@@ -39,7 +41,7 @@ const connectWithRetry = () => {
         .catch((error: any) => {
             logger.error(
                 { err: error },
-                "MongoDB connection error (Payment Service)",
+                "MongoDB connection error (Payment Service)"
             );
             logger.info("Retrying MongoDB connection in 5 seconds...");
             setTimeout(connectWithRetry, 5000);

@@ -1,5 +1,8 @@
 import { Request, Response } from "express";
-import { CreateOrderUseCase, PaymentFailedError } from "@application/use-cases/CreateOrderUseCase";
+import {
+    CreateOrderUseCase,
+    PaymentFailedError,
+} from "@application/use-cases/CreateOrderUseCase";
 import { z } from "zod";
 import jwt from "jsonwebtoken";
 
@@ -26,7 +29,7 @@ function extractActorId(req: Request): string {
 }
 
 export class OrderController {
-    constructor(private readonly createOrderUseCase: CreateOrderUseCase) { }
+    constructor(private readonly createOrderUseCase: CreateOrderUseCase) {}
 
     create = async (req: Request, res: Response): Promise<any> => {
         try {
@@ -34,7 +37,7 @@ export class OrderController {
             if (!validationResult.success) {
                 req.log.warn(
                     { issues: validationResult.error.issues },
-                    "Validation failed",
+                    "Validation failed"
                 );
                 return res.status(400).json({
                     error: "Validation failed",
@@ -50,7 +53,9 @@ export class OrderController {
                 amount,
                 correlationId: req.correlationId,
                 actorId: extractActorId(req),
-                authorizationHeader: req.headers.authorization as string | undefined,
+                authorizationHeader: req.headers.authorization as
+                    | string
+                    | undefined,
             });
 
             req.log.info({ orderId: result.orderId }, "Order created");
@@ -67,7 +72,10 @@ export class OrderController {
             req.log.error({ err: error }, "Failed to create order");
             return res
                 .status(500)
-                .json({ error: "Failed to create order", details: error.message });
+                .json({
+                    error: "Failed to create order",
+                    details: error.message,
+                });
         }
     };
 }

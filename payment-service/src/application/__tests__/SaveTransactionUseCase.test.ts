@@ -18,8 +18,17 @@ describe("SaveTransactionUseCase", () => {
     });
 
     it("should save a transaction with status success", async () => {
-        mockRepo.save.mockImplementation(async (txn) =>
-            new Transaction("saved-id", txn.customerId, txn.orderId, txn.productId, txn.amount, txn.status, txn.createdAt),
+        mockRepo.save.mockImplementation(
+            async (txn) =>
+                new Transaction(
+                    "saved-id",
+                    txn.customerId,
+                    txn.orderId,
+                    txn.productId,
+                    txn.amount,
+                    txn.status,
+                    txn.createdAt
+                )
         );
 
         const result = await useCase.execute({
@@ -36,8 +45,17 @@ describe("SaveTransactionUseCase", () => {
     });
 
     it("should log an audit entry after saving", async () => {
-        mockRepo.save.mockImplementation(async (txn) =>
-            new Transaction("t-id", txn.customerId, txn.orderId, txn.productId, txn.amount, txn.status, txn.createdAt),
+        mockRepo.save.mockImplementation(
+            async (txn) =>
+                new Transaction(
+                    "t-id",
+                    txn.customerId,
+                    txn.orderId,
+                    txn.productId,
+                    txn.amount,
+                    txn.status,
+                    txn.createdAt
+                )
         );
 
         await useCase.execute({
@@ -55,7 +73,7 @@ describe("SaveTransactionUseCase", () => {
                 entityType: "Transaction",
                 actorId: "system",
                 correlationId: "corr-2",
-            }),
+            })
         );
     });
 });

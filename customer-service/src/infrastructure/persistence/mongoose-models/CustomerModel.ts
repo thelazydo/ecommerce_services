@@ -30,10 +30,10 @@ const customerSchema = new Schema<ICustomerDocument>(
     {
         toJSON: { getters: true },
         toObject: { getters: true },
-    },
+    }
 );
 
 export const CustomerModel = mongoose.model<ICustomerDocument>(
     "Customer",
-    customerSchema,
+    customerSchema
 );

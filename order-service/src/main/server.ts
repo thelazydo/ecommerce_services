@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 
 if (!config.mongodbUri || !config.paymentServiceUrl) {
     logger.fatal(
-        "MONGODB_URI or PAYMENT_SERVICE_URL environment variable is missing. Exiting.",
+        "MONGODB_URI or PAYMENT_SERVICE_URL environment variable is missing. Exiting."
     );
     process.exit(1);
 }
@@ -12,7 +12,9 @@ if (!config.mongodbUri || !config.paymentServiceUrl) {
 const connectWithRetry = () => {
     logger.info("MongoDB connection with retry");
     mongoose
-        .connect(config.mongodbUri!, { writeConcern: { w: "majority", j: true } })
+        .connect(config.mongodbUri!, {
+            writeConcern: { w: "majority", j: true },
+        })
         .then(() => {
             logger.info("Connected to MongoDB (Order Service)");
 
@@ -35,7 +37,10 @@ const connectWithRetry = () => {
             process.on("SIGINT", gracefulShutdown);
         })
         .catch((error) => {
-            logger.error({ err: error }, "MongoDB connection error (Order Service)");
+            logger.error(
+                { err: error },
+                "MongoDB connection error (Order Service)"
+            );
             logger.info("Retrying MongoDB connection in 5 seconds...");
             setTimeout(connectWithRetry, 5000);
         });

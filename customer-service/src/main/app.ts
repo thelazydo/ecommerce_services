@@ -21,7 +21,7 @@ app.use(
     pinoHttp({
         logger,
         customProps: (req: any) => ({ correlationId: req.correlationId }),
-    }),
+    })
 );
 
 // Health and Readiness Checks

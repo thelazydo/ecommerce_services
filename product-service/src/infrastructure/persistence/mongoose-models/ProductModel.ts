@@ -14,5 +14,5 @@ const productSchema = new Schema<IProductDocument>({
 
 export const ProductModel = mongoose.model<IProductDocument>(
     "Product",
-    productSchema,
+    productSchema
 );

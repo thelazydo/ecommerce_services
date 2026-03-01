@@ -12,18 +12,19 @@ This project is a demonstration of a microservices architecture for an e-commerc
 ## Prerequisites
 
 *   Docker and Docker Compose
+*   Bun
 
 ## Getting Started
 
 1.  **Clone the repository:**
     ```bash
-    git clone <repository_url>
-    cd youverify
+    git clone git@github.com:thelazydo/ecommerce_services.git
+    cd ecommerce_services
     ```
 
 2.  **Start the services using Docker Compose:**
     ```bash
-    docker-compose up --build
+    docker-compose --env-file .env up --build
     ```
     This will start MongoDB, RabbitMQ, and all four Node.js microservices. Wait for all services to show successful connection messages in the terminal logs.
 
@@ -55,11 +56,17 @@ This project is a demonstration of a microservices architecture for an e-commerc
 
 ## Testing Flow
 
+
+
 1.  The `POST /orders` request hits the **Order Service**.
 2.  The **Order Service** sends a REST request to the **Payment Service**.
 3.  The **Payment Service** responds successfully and publishes the transaction to RabbitMQ.
 4.  The **Order Service** saves the order (status: `pending`) and returns the response to the user.
 5.  The **Payment Service** worker consumes the RabbitMQ message and saves the transaction history in the database.
+
+```bash
+bun run test
+```
 
 ## Running Tests Locally
 

@@ -37,7 +37,9 @@ describe("MongoOrderRepository", () => {
 
     describe("findById", () => {
         it("should return an order when found", async () => {
-            const saved = await repo.save(new Order("", "c-1", "p-1", 50, "pending"));
+            const saved = await repo.save(
+                new Order("", "c-1", "p-1", 50, "pending")
+            );
             const found = await repo.findById(saved.id);
 
             expect(found).not.toBeNull();
@@ -52,9 +54,11 @@ describe("MongoOrderRepository", () => {
 
     describe("update", () => {
         it("should update the order status", async () => {
-            const saved = await repo.save(new Order("", "c-1", "p-1", 100, "pending"));
+            const saved = await repo.save(
+                new Order("", "c-1", "p-1", 100, "pending")
+            );
             const updated = await repo.update(
-                new Order(saved.id, "c-1", "p-1", 100, "failed"),
+                new Order(saved.id, "c-1", "p-1", 100, "failed")
             );
 
             expect(updated.orderStatus).toBe("failed");
@@ -68,7 +72,9 @@ describe("MongoOrderRepository", () => {
             const fakeId = new mongoose.Types.ObjectId().toString();
             const order = new Order(fakeId, "c-1", "p-1", 100, "failed");
 
-            await expect(repo.update(order)).rejects.toThrow(/not found for update/);
+            await expect(repo.update(order)).rejects.toThrow(
+                /not found for update/
+            );
         });
     });
 });

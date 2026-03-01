@@ -6,7 +6,7 @@ import {
 } from "@application/dtos/GetProductDTO";
 
 export class GetProductUseCase {
-    constructor(private readonly productRepository: IProductRepository) { }
+    constructor(private readonly productRepository: IProductRepository) {}
 
     async execute(request: GetProductRequest): Promise<GetProductResponse> {
         const product = await this.productRepository.findById(request.id);

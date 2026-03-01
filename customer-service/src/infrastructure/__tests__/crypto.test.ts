@@ -77,7 +77,7 @@ describe("Crypto Utilities", () => {
 
         it("should return malformed enc:gcm: strings unchanged", () => {
             expect(decryptGCM("enc:gcm:only-two-parts")).toBe(
-                "enc:gcm:only-two-parts",
+                "enc:gcm:only-two-parts"
             );
         });
     });

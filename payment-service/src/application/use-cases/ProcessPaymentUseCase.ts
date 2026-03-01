@@ -8,11 +8,11 @@ import {
 export class ProcessPaymentUseCase {
     constructor(
         private readonly transactionRepository: ITransactionRepository,
-        private readonly messagePublisher: IMessagePublisher,
-    ) { }
+        private readonly messagePublisher: IMessagePublisher
+    ) {}
 
     async execute(
-        request: ProcessPaymentRequest,
+        request: ProcessPaymentRequest
     ): Promise<ProcessPaymentResponse> {
         // Idempotency check
         const existingTransaction =

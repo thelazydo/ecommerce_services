@@ -22,7 +22,7 @@ app.use(
     pinoHttp({
         logger,
         customProps: (req: any) => ({ correlationId: req.correlationId }),
-    }),
+    })
 );
 
 app.get("/health", (req: Request, res: Response) => {
@@ -36,7 +36,9 @@ app.get("/ready", async (req: Request, res: Response) => {
     };
 
     try {
-        await axios.get(`${config.paymentServiceUrl}/health`, { timeout: 2000 });
+        await axios.get(`${config.paymentServiceUrl}/health`, {
+            timeout: 2000,
+        });
         checks.paymentService = true;
     } catch {
         checks.paymentService = false;

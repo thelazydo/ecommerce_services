@@ -1,9 +1,7 @@
 import { Order } from "@domain/entities/Order";
 import { IOrderRepository } from "@domain/repositories/IOrderRepository";
 import { IAuditLogger } from "@application/interfaces/IAuditLogger";
-import {
-    IPaymentService,
-} from "@application/interfaces/IPaymentService";
+import { IPaymentService } from "@application/interfaces/IPaymentService";
 import {
     CreateOrderRequest,
     CreateOrderResponse,
@@ -13,8 +11,8 @@ export class CreateOrderUseCase {
     constructor(
         private readonly orderRepository: IOrderRepository,
         private readonly paymentService: IPaymentService,
-        private readonly auditLogger: IAuditLogger,
-    ) { }
+        private readonly auditLogger: IAuditLogger
+    ) {}
 
     async execute(request: CreateOrderRequest): Promise<CreateOrderResponse> {
         // Save as pending first to avoid dual-write issues
@@ -23,7 +21,7 @@ export class CreateOrderUseCase {
             request.customerId,
             request.productId,
             request.amount,
-            "pending",
+            "pending"
         );
         order = await this.orderRepository.save(order);
 
@@ -44,7 +42,7 @@ export class CreateOrderUseCase {
                 order.customerId,
                 order.productId,
                 order.amount,
-                "failed",
+                "failed"
             );
             await this.orderRepository.update(order);
             throw new PaymentFailedError(paymentResponse.data);

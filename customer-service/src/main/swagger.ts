@@ -6,7 +6,8 @@ const swaggerDocument = {
     info: {
         title: "Customer Service API",
         version: "1.0.0",
-        description: "Manages customer entities. Provides seeding and retrieval.",
+        description:
+            "Manages customer entities. Provides seeding and retrieval.",
     },
     servers: [{ url: "/api/v1", description: "v1 API" }],
     components: {
@@ -21,7 +22,10 @@ const swaggerDocument = {
             Customer: {
                 type: "object",
                 properties: {
-                    _id: { type: "string", example: "665a1b2c3d4e5f6a7b8c9d0e" },
+                    _id: {
+                        type: "string",
+                        example: "665a1b2c3d4e5f6a7b8c9d0e",
+                    },
                     name: { type: "string", example: "John Doe" },
                     email: { type: "string", example: "john@example.com" },
                 },
@@ -46,7 +50,9 @@ const swaggerDocument = {
                         description: "Customer created/returned",
                         content: {
                             "application/json": {
-                                schema: { $ref: "#/components/schemas/Customer" },
+                                schema: {
+                                    $ref: "#/components/schemas/Customer",
+                                },
                             },
                         },
                     },
@@ -64,7 +70,10 @@ const swaggerDocument = {
                         name: "id",
                         in: "path",
                         required: true,
-                        schema: { type: "string", pattern: "^[a-fA-F0-9]{24}$" },
+                        schema: {
+                            type: "string",
+                            pattern: "^[a-fA-F0-9]{24}$",
+                        },
                         description: "MongoDB ObjectId",
                     },
                 ],
@@ -73,7 +82,9 @@ const swaggerDocument = {
                         description: "Customer found",
                         content: {
                             "application/json": {
-                                schema: { $ref: "#/components/schemas/Customer" },
+                                schema: {
+                                    $ref: "#/components/schemas/Customer",
+                                },
                             },
                         },
                     },

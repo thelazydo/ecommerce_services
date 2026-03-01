@@ -7,7 +7,7 @@ import {
 } from "@application/dtos/GetCustomerDTO";
 
 export class GetCustomerUseCase {
-    constructor(private readonly customerRepository: ICustomerRepository) { }
+    constructor(private readonly customerRepository: ICustomerRepository) {}
 
     async execute(request: GetCustomerRequest): Promise<GetCustomerResponse> {
         const customer = await this.customerRepository.findById(request.id);

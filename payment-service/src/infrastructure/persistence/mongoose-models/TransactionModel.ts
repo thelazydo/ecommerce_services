@@ -20,5 +20,5 @@ const transactionSchema = new Schema<ITransactionDocument>({
 
 export const TransactionModel = mongoose.model<ITransactionDocument>(
     "Transaction",
-    transactionSchema,
+    transactionSchema
 );

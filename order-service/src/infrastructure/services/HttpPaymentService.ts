@@ -35,7 +35,7 @@ export class HttpPaymentService implements IPaymentService {
 
     constructor(
         private readonly paymentServiceUrl: string,
-        options: HttpPaymentServiceOptions = {},
+        options: HttpPaymentServiceOptions = {}
     ) {
         this.timeoutMs = options.timeoutMs ?? 5000;
         this.maxRetries = options.maxRetries ?? 3;
@@ -89,7 +89,7 @@ export class HttpPaymentService implements IPaymentService {
     }
 
     private async executeWithRetry(
-        request: PaymentRequest,
+        request: PaymentRequest
     ): Promise<PaymentResponse> {
         let lastError: any;
 
@@ -120,7 +120,7 @@ export class HttpPaymentService implements IPaymentService {
                                 ? { Authorization: request.authorizationHeader }
                                 : {}),
                         },
-                    },
+                    }
                 );
 
                 const isSuccess = [200, 201, 202].includes(response.status);

@@ -6,16 +6,8 @@ import { config } from "@main/config";
 const router = Router();
 const requireAuth = createRequireAuth(config.jwtSecret);
 
-router.post(
-    "/products/seed",
-    requireAuth,
-    container.productController.seed,
-);
+router.post("/products/seed", requireAuth, container.productController.seed);
 
-router.get(
-    "/products/:id",
-    requireAuth,
-    container.productController.getById,
-);
+router.get("/products/:id", requireAuth, container.productController.getById);
 
 export { router as productRoutes };

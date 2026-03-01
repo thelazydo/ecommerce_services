@@ -19,7 +19,7 @@ app.use(
     pinoHttp({
         logger,
         customProps: (req: any) => ({ correlationId: req.correlationId }),
-    }),
+    })
 );
 
 app.get("/health", (req: Request, res: Response) => {
