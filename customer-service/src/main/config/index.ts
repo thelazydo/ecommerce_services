@@ -19,7 +19,6 @@ const configSchema = z.object({
 const parsed = configSchema.safeParse(process.env);
 
 if (!parsed.success) {
-    console.log({ error: JSON.parse(parsed.error.message) });
     console.error("❌ Invalid environment configuration:");
     console.error(z.treeifyError(parsed.error));
     process.exit(1);

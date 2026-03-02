@@ -2,7 +2,7 @@ SERVICES := customer-service product-service order-service payment-service trans
 
 .PHONY: all setup install build start stop test clean logs \
         test-customer test-product test-order test-payment test-worker \
-        asyncapi
+        test-e2e asyncapi
 
 all: setup build start
 
@@ -62,6 +62,10 @@ test-payment:
 test-worker:
 	@echo "Testing transaction-worker..."
 	@cd transaction-worker && bun run test
+
+test-e2e:
+	@echo "Running E2E tests..."
+	@cd e2e && bun install && bun run test
 
 clean:
 	@echo "Cleaning up..."

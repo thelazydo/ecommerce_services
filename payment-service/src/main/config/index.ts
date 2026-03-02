@@ -6,7 +6,7 @@ const isTest = process.env.NODE_ENV === "test";
 const configSchema = z.object({
     PORT: z.coerce.number().default(3004),
     MONGODB_URI: isTest
-        ? z.string().optional()
+        ? z.string().default("")
         : z.string({ message: "MONGODB_URI is required" }),
     RABBITMQ_URL: z.string().default("amqp://localhost:5672"),
     JWT_SECRET: z.string().default("fallback-secret-for-tests"),
@@ -17,7 +17,7 @@ const parsed = configSchema.safeParse(process.env);
 
 if (!parsed.success) {
     console.error("❌ Invalid environment configuration:");
-    console.error(parsed.error.format());
+    console.error(z.treeifyError(parsed.error));
     process.exit(1);
 }
 

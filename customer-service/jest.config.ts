@@ -1,4 +1,7 @@
-module.exports = {
+/** @jest-config-loader ts-node */
+import type { Config } from "jest";
+
+const config: Config = {
     preset: "ts-jest",
     testEnvironment: "node",
     testMatch: ["**/__tests__/**/*.test.ts", "**/?(*.)+(spec|test).ts"],
@@ -21,3 +24,5 @@ module.exports = {
     },
     transformIgnorePatterns: ["node_modules/(?!uuid)"],
 };
+
+export default config;

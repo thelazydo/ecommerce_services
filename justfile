@@ -57,6 +57,10 @@ test-payment:
 test-worker:
     cd transaction-worker && bun run test
 
+# Run end-to-end tests
+test-e2e:
+    cd e2e && bun install && bun run test
+
 # Validate AsyncAPI documentation
 asyncapi:
     bunx @asyncapi/cli validate asyncapi.yaml

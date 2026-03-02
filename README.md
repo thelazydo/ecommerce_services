@@ -7,7 +7,8 @@ This project is a demonstration of a microservices architecture for an e-commerc
 *   **Customer Service (Port 3001)**: Manages customer data.
 *   **Product Service (Port 3002)**: Manages product data.
 *   **Order Service (Port 3003)**: Handles order creation. Communicates synchronously with the Payment Service.
-*   **Payment Service (Port 3004)**: Processes payments and publishes transaction details asynchronously to a RabbitMQ queue. It also contains a worker to consume those messages and save them to the database.
+*   **Payment Service (Port 3004)**: Processes payments and publishes transaction details asynchronously to a RabbitMQ queue.
+*   **Transaction Worker**: Standalone worker that consumes messages from the RabbitMQ queue and saves transaction details to the database.
 
 ## Prerequisites
 
@@ -22,13 +23,23 @@ This project is a demonstration of a microservices architecture for an e-commerc
     cd ecommerce_services
     ```
 
-2.  **Start the services using Docker Compose:**
+2.  **Setup the environment & install dependencies:**
+    You can use either `make` or `just` (they provide identical commands).
     ```bash
-    docker-compose --env-file .env up --build
+    make setup
+    # OR
+    just setup
     ```
-    This will start MongoDB, RabbitMQ, and all four Node.js microservices. Wait for all services to show successful connection messages in the terminal logs.
 
-3.  **Get Seeded Data IDs:**
+3.  **Start the services:**
+    ```bash
+    make start
+    # OR
+    just start
+    ```
+    This will start MongoDB, RabbitMQ, and all four Node.js microservices via Docker Compose. Wait for all services to show successful connection messages in the terminal logs.
+
+4.  **Get Seeded Data IDs:**
     A customer and a product are automatically seeded on startup. You can call the seed endpoints to retrieve their details and IDs:
     *   **Get Customer ID:**
         ```bash
@@ -42,7 +53,7 @@ This project is a demonstration of a microservices architecture for an e-commerc
         ```
         *Note the `_id` returned in the response for the `productId`.*
 
-4.  **Create an Order:**
+5.  **Create an Order:**
     Use the `customerId` and `productId` obtained from the previous steps.
     ```bash
     curl -X POST http://localhost:3003/orders \
@@ -56,24 +67,39 @@ This project is a demonstration of a microservices architecture for an e-commerc
 
 ## Testing Flow
 
-
-
 1.  The `POST /orders` request hits the **Order Service**.
 2.  The **Order Service** sends a REST request to the **Payment Service**.
 3.  The **Payment Service** responds successfully and publishes the transaction to RabbitMQ.
 4.  The **Order Service** saves the order (status: `pending`) and returns the response to the user.
 5.  The **Payment Service** worker consumes the RabbitMQ message and saves the transaction history in the database.
 
+To run the end-to-end integration tests that verify the full workflow across all services, ensure the services are running via Docker Compose (`make start` or `just start`), then run:
+
 ```bash
-bun run test
+make test-e2e
+# OR
+just test-e2e
 ```
 
 ## Running Tests Locally
 
-To run the unit and integration tests for each service locally (outside of Docker), you need to have Node.js installed.
+To run the unit and integration tests across all services locally (outside of Docker), ensure you have Node.js and Bun installed.
 
-1.  Navigate into a service directory (e.g., `cd order-service`).
-2.  Install dependencies: `bun install`
-3.  Run tests: `bunx jest`
+You can run tests for all services at once:
+```bash
+make test
+# OR
+just test
+```
+
+Or you can run tests for specific services:
+```bash
+make test-customer   # Test Customer Service
+make test-product    # Test Product Service
+make test-order      # Test Order Service
+make test-payment    # Test Payment Service
+make test-worker     # Test Transaction Worker
+```
 
 *Note: Tests use `mongodb-memory-server` and mock external services, so you do not need MongoDB or RabbitMQ running locally to execute the test suites.*
+

@@ -1,32 +1,32 @@
 {
-  "name": "transaction-worker",
-  "version": "1.0.0",
-  "description": "Standalone RabbitMQ consumer that persists payment transactions",
-  "main": "dist/main/index.js",
-  "scripts": {
-    "test": "jest --forceExit --detectOpenHandles --runInBand",
-    "dev": "bun run --watch src/main/index.ts",
-    "typecheck": "tsc --noEmit",
-    "build:js": "bun run typecheck && bun build ./src/main/index.ts --outdir ./dist --target bun",
-    "build:bin": "bun run typecheck && bun build ./src/main/index.ts --compile --outfile ./dist/transaction_worker",
-    "start:js": "NODE_ENV=production bun run dist/index.js",
-    "start:bin": "NODE_ENV=production ./dist/transaction_worker"
-  },
-  "dependencies": {
-    "@types/bun": "^1.3.9",
-    "amqplib": "^0.10.4",
-    "mongoose": "^8.5.0",
-    "pino": "^9.2.0",
-    "zod": "^3.23.8"
-  },
-  "devDependencies": {
-    "@types/amqplib": "^0.10.5",
-    "@types/jest": "^30.0.0",
-    "jest": "^30.2.0",
-    "mongodb-memory-server": "^11.0.1",
-    "ts-jest": "^29.4.6",
-    "ts-node": "^10.9.2",
-    "tsconfig-paths": "^4.2.0",
-    "typescript": "^5.5.0"
-  }
+    "name": "transaction-worker",
+    "version": "1.0.0",
+    "description": "Standalone RabbitMQ consumer that persists payment transactions",
+    "main": "dist/main/index.js",
+    "scripts": {
+        "test": "jest --forceExit --detectOpenHandles --runInBand",
+        "dev": "bun run --watch src/main/index.ts",
+        "typecheck": "tsc --noEmit",
+        "build:js": "bun run typecheck && bun build ./src/main/index.ts --outdir ./dist --target bun",
+        "build:bin": "bun run typecheck && bun build ./src/main/index.ts --compile --outfile ./dist/transaction_worker",
+        "start:js": "NODE_ENV=production bun run dist/index.js",
+        "start:bin": "NODE_ENV=production ./dist/transaction_worker"
+    },
+    "dependencies": {
+        "@types/bun": "^1.3.9",
+        "amqplib": "^0.10.9",
+        "mongoose": "^9.2.2",
+        "pino": "^10.3.1",
+        "zod": "^4.3.6"
+    },
+    "devDependencies": {
+        "@types/amqplib": "^0.10.5",
+        "@types/jest": "^30.0.0",
+        "jest": "^30.2.0",
+        "mongodb-memory-server": "^11.0.1",
+        "ts-jest": "^29.4.6",
+        "ts-node": "^10.9.2",
+        "tsconfig-paths": "^4.2.0",
+        "typescript": "^5.5.0"
+    }
 }

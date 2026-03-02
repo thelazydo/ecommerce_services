@@ -22,12 +22,6 @@ const ORDER_URL = process.env.ORDER_URL || "http://localhost:3003";
 const MONGODB_URI =
     process.env.MONGODB_URI || "mongodb://localhost:27017/youverify";
 const JWT_SECRET = process.env.JWT_SECRET || "test-jwt-secret-for-e2e-testing";
-console.log({
-    CUSTOMER_URL,
-    PRODUCT_URL,
-    ORDER_URL,
-    MONGODB_URI,
-});
 
 let client: MongoClient;
 let db: Db;

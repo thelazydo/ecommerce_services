@@ -10,10 +10,8 @@ const configSchema = z.object({
 const parsed = configSchema.safeParse(process.env);
 
 if (!parsed.success) {
-    console.error(
-        "❌ Invalid environment variables:",
-        parsed.error.flatten().fieldErrors
-    );
+    console.error("❌ Invalid environment variables:");
+    console.error(z.treeifyError(parsed.error));
     process.exit(1);
 }
 

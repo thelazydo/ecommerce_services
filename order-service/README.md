@@ -24,17 +24,21 @@ src/
 
 ## Running Locally
 
+To run this service individually:
 ```bash
 cp ../.env.example .env   # edit values
 bun install
 bun run dev
 ```
+*(Alternatively, you can setup and start all services from the root using `make start` or `just start`)*
 
 ## Testing
 
+To run tests for this service:
 ```bash
 bun test
 ```
+*(Alternatively, you can test this service from the root using `make test-order` or `just test-order`)*
 
 ## API Endpoints
 

@@ -22,11 +22,21 @@ src/
 
 ## Running Locally
 
+To run this worker individually:
 ```bash
 cp ../.env.example .env   # edit values
 bun install
 bun run dev
 ```
+*(Alternatively, you can setup and start all services from the root using `make start` or `just start`)*
+
+## Testing
+
+To run tests for this worker:
+```bash
+bun test
+```
+*(Alternatively, you can test this worker from the root using `make test-worker` or `just test-worker`)*
 
 ## How It Works
 
