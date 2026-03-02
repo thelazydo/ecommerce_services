@@ -38,10 +38,12 @@ bun test
 ```
 *(Alternatively, you can test this worker from the root using `make test-worker` or `just test-worker`)*
 
-## How It Works
+## Asynchronous Processing (How It Works)
 
-1. Connects to MongoDB and RabbitMQ
-2. Consumes messages from `payment.processed` queue
-3. Persists each message as a `Transaction` document
-4. On failure, routes message to the Dead Letter Queue (`payment.dlq`)
-5. Handles `SIGTERM`/`SIGINT` for graceful shutdown
+This worker acts as a standalone asynchronous RabbitMQ consumer.
+
+1. Connects to MongoDB and RabbitMQ on startup.
+2. Consumes payment transaction messages from the `payment.processed` queue.
+3. Persists each processed message as a `Transaction` document in the core database.
+4. On failure (e.g., database connection issues), the worker handles retries. After exhaustion, it routes the message to the Dead Letter Queue (`payment.dlq`) to ensure no data is lost.
+5. Handles `SIGTERM`/`SIGINT` for graceful shutdown and channel closing.

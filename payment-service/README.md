@@ -1,12 +1,12 @@
 # Payment Service
 
-Processes payments with idempotency and publishes results to RabbitMQ. Includes an embedded consumer for the `payment.processed` queue that persists transactions.
+Processes payments with idempotency and publishes results to RabbitMQ.
 
 ## Architecture
 
 ```
 src/
-  application/     # Use cases (ProcessPayment, SaveTransaction)
+  application/     # Use cases (ProcessPayment)
   domain/          # Transaction entity, repository interface
   infrastructure/  # MongoDB repository, RabbitMQ publisher, web middleware
   main/            # Express app, routes, config, DI container
@@ -49,7 +49,14 @@ bun test
 | `POST` | `/api/v1/payments` | Bearer JWT | Process a payment |
 | `GET` | `/api-docs` | No | Swagger UI |
 
-## Messaging
+### API Documentation (Swagger)
 
-- **Publishes**: `payment.processed` exchange with payment result data
-- **Consumes**: `payment.processed` queue — saves transactions to MongoDB (with DLQ support)
+This service provides interactive REST API documentation using Swagger UI. Once the service is running, you can access the documentation at [http://localhost:3004/api-docs](http://localhost:3004/api-docs).
+
+Use this interface to explore available endpoints, view request and response schemas, and execute API calls directly from your browser. Keep in mind that securing endpoints require providing a valid Bearer JWT token.
+
+## Asynchronous Messaging (RabbitMQ)
+
+The Payment Service relies on **RabbitMQ** for asynchronous communication regarding payment statuses.
+
+- **Publishes**: Emits an event with the payment result data to the `payment.processed` exchange.

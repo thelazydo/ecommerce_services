@@ -81,3 +81,7 @@ logs:
 asyncapi:
 	@echo "Validating AsyncAPI document..."
 	bunx @asyncapi/cli validate asyncapi.yaml
+
+asyncapi-docs:
+	@echo "Opening AsyncAPI Studio in browser..."
+	bunx @asyncapi/cli start studio -f asyncapi.yaml -p 8080

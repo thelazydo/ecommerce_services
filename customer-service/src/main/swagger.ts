@@ -98,5 +98,35 @@ const swaggerDocument = {
 };
 
 export function setupSwagger(app: Express): void {
-    app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+    const html = `<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Swagger UI</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.11.0/swagger-ui.min.css" />
+  </head>
+  <body>
+    <div id="swagger-ui"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.11.0/swagger-ui-bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.11.0/swagger-ui-standalone-preset.min.js"></script>
+    <script>
+      window.onload = () => {
+        window.ui = SwaggerUIBundle({
+          spec: ${JSON.stringify(swaggerDocument)},
+          dom_id: '#swagger-ui',
+          presets: [
+            SwaggerUIBundle.presets.apis,
+            SwaggerUIStandalonePreset
+          ],
+          layout: "BaseLayout",
+        });
+      };
+    </script>
+  </body>
+</html>`;
+
+    app.get("/api-docs", (req, res) => {
+        res.type("html").send(html);
+    });
 }

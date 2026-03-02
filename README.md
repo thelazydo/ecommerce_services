@@ -65,13 +65,46 @@ This project is a demonstration of a microservices architecture for an e-commerc
     }'
     ```
 
+## API Documentation (Swagger)
+
+All REST-based microservices provide interactive API documentation using Swagger UI. Once the services are running, you can access the documentation at the following URLs:
+
+*   **Customer Service**: [http://localhost:3001/api-docs](http://localhost:3001/api-docs)
+*   **Product Service**: [http://localhost:3002/api-docs](http://localhost:3002/api-docs)
+*   **Order Service**: [http://localhost:3003/api-docs](http://localhost:3003/api-docs)
+*   **Payment Service**: [http://localhost:3004/api-docs](http://localhost:3004/api-docs)
+
+You can use the Swagger UI to explore the available endpoints, view the request/response schemas, and execute API calls directly from your browser. Each API documentation page requires providing a Bearer JWT token if the endpoint specifies authentication.
+
+## Asynchronous Communication
+
+The platform uses **RabbitMQ** for asynchronous communication between services to ensure loose coupling and high availability.
+
+### Event: `payment.processed`
+
+*   **Publisher**: The **Payment Service** publishes an event to the `payment.processed` exchange whenever a payment is successfully processed.
+*   **Consumers**:
+    *   **Transaction Worker**: A standalone worker that listens to the `payment.processed` queue to persist the final transaction state and perform any required downstream processing.
+*   **Dead Letter Queue (DLQ)**: If a consumer fails to process a message successfully (e.g., due to database downtime or unexpected errors), the message is routed to a Dead Letter Exchange/Queue (`payment.dlq`) after a configurable number of retries. This ensures no messages are lost and allows for manual inspection or automated replay of failed transactions.
+
+The event-driven API is documented using the AsyncAPI specification (`asyncapi.yaml` at the root of the project). 
+
+To view the documentation interactively in your browser via AsyncAPI Studio, run the following command from the project root:
+
+```bash
+make asyncapi-docs
+# OR
+just asyncapi-docs
+```
+This will start a local server and open the documentation in your default web browser.
+
 ## Testing Flow
 
 1.  The `POST /orders` request hits the **Order Service**.
 2.  The **Order Service** sends a REST request to the **Payment Service**.
 3.  The **Payment Service** responds successfully and publishes the transaction to RabbitMQ.
 4.  The **Order Service** saves the order (status: `pending`) and returns the response to the user.
-5.  The **Payment Service** worker consumes the RabbitMQ message and saves the transaction history in the database.
+5.  The **Transaction Worker** consumes the RabbitMQ message and saves the transaction history in the database.
 
 To run the end-to-end integration tests that verify the full workflow across all services, ensure the services are running via Docker Compose (`make start` or `just start`), then run:
 
@@ -102,4 +135,3 @@ make test-worker     # Test Transaction Worker
 ```
 
 *Note: Tests use `mongodb-memory-server` and mock external services, so you do not need MongoDB or RabbitMQ running locally to execute the test suites.*
-

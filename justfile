@@ -65,6 +65,10 @@ test-e2e:
 asyncapi:
     bunx @asyncapi/cli validate asyncapi.yaml
 
+# Open AsyncAPI Studio in browser
+asyncapi-docs:
+    bunx @asyncapi/cli start studio -f asyncapi.yaml -p 8080
+
 # Clean up artifacts
 clean:
     for service in {{services}}; do \

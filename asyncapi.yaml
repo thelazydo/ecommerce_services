@@ -1,15 +1,15 @@
-asyncapi: 3.0.0
+asyncapi: 3.1.0
 info:
   title: Ecommerce Microservices Event-Driven API
   version: 1.0.0
-  description: API documentation for the event-driven communication between microservices using RabbitMQ.
-
+  description: >-
+    API documentation for the event-driven communication between microservices
+    using RabbitMQ.
 servers:
   rabbitmq:
     host: rabbitmq
     protocol: amqp
     description: RabbitMQ broker used for internal microservice communication.
-
 channels:
   paymentProcessed:
     address: payment.processed
@@ -17,22 +17,23 @@ channels:
       paymentProcessedMessage:
         $ref: '#/components/messages/PaymentProcessedMessage'
     description: Queue for successfully processed payments.
-
 operations:
   paymentServicePublish:
     action: send
     channel:
       $ref: '#/channels/paymentProcessed'
     summary: Publish a processed payment event.
-    description: The payment-service publishes an event to this queue when a payment is successfully processed.
-
+    description: >-
+      The payment-service publishes an event to this queue when a payment is
+      successfully processed.
   transactionWorkerSubscribe:
     action: receive
     channel:
       $ref: '#/channels/paymentProcessed'
     summary: Subscribe to processed payment events.
-    description: The transaction-worker subscribes to this queue to save the transaction to the database.
-
+    description: >-
+      The transaction-worker subscribes to this queue to save the transaction to
+      the database.
 components:
   messages:
     PaymentProcessedMessage:
@@ -41,7 +42,6 @@ components:
       summary: Event emitted when a payment is processed.
       payload:
         $ref: '#/components/schemas/PaymentMessagePayload'
-
   schemas:
     PaymentMessagePayload:
       type: object
